@@ -1,6 +1,6 @@
 import path from 'path'
 import { getFormattedFileContent } from './formatter'
-import { getVueType } from './utils'
+import { getApiType, getScript } from './utils'
 
 const formattedFilesContents = [
     './examples/Vue-2-ts.vue',
@@ -14,6 +14,8 @@ const formattedFilesContents = [
 formattedFilesContents.forEach((el) => {
     console.log('______________________________')
     console.log(`PATH: ${el.path}`)
-    console.log(`VUE TYPE: ${getVueType(el.content)}`)
+    console.log(`API TYPE: ${JSON.stringify(getApiType(el.content))}`)
+    const script = getScript(el.content)
+    console.log('SCRIPT', script.vueOptions)
     console.log('______________________________')
 })
