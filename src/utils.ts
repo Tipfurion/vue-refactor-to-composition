@@ -1,4 +1,4 @@
-import { ApiType } from './types'
+import { ApiType, Script } from './types'
 
 export function getApiType(formattedFileContent: string[]): ApiType {
     const startScriptString = formattedFileContent.find((str) =>
@@ -12,14 +12,7 @@ export function getApiType(formattedFileContent: string[]): ApiType {
     )
     return { isCompositon, isTypescript }
 }
-export function getScript(formattedFileContent: string[]): {
-    exportStringIndex: number
-    startScriptStringIndex: number
-    endScriptStringIndex: number
-    scriptContent: string[]
-    vueScriptContent: string[]
-    vueOptions: string[]
-} {
+export function getScript(formattedFileContent: string[]): Script {
     const startScriptStringIndex = formattedFileContent.findIndex((str) =>
         str.match(/<script.*>/g)
     )
