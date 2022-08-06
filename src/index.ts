@@ -6,8 +6,8 @@ import { getApiType, getScript } from './utils'
 
 const formattedFilesContents = [
     './examples/Vue-2-ts.vue',
-    //'./examples/Vue-2.vue',
-    //'./examples/Vue-2-compostion-ts.vue',
+    './examples/Vue-2.vue',
+    './examples/Vue-2-compostion-ts.vue',
 ].map((p) => ({
     path: p,
     content: getFormattedFileContent(path.resolve(__dirname, p)),
