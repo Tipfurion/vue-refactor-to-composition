@@ -8,5 +8,4 @@ export interface Script {
     endScriptStringIndex: number
     scriptContent: string[]
     vueScriptContent: string[]
-    vueOptions: string[]
 }

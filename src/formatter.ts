@@ -6,13 +6,12 @@ export function getFormattedFileContent(filePath: string) {
     const file = fs.readFileSync(filePath)
     const formattedFileContent = prettier
         .format(file.toString(), {
-            semi: true,
+            semi: false,
             parser: 'vue',
             printWidth: 150,
+            trailingComma: 'none',
         })
         .split('\n')
 
     return formattedFileContent
 }
-
-//console.log(f.toString().split('\r\n'))

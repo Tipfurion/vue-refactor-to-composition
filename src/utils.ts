@@ -1,3 +1,4 @@
+import ts from 'typescript'
 import { ApiType, Script } from './types'
 
 export function getApiType(formattedFileContent: string[]): ApiType {
@@ -30,22 +31,55 @@ export function getScript(formattedFileContent: string[]): Script {
     )
     const vueScriptContent = scriptContent.slice(
         exportStringIndex,
-        scriptContent.length - 1
+        scriptContent.length
     )
-    const vueOptions = [...vueScriptContent].map((str, index) => {
-        return index === 0
-            ? str
-                  .replace('export default', '') //vue2
-                  .replace('defineComponent(', '') //vue-3 and vue-2-composition api
-                  .replace('Vue.extend(', '') //vue-2 typescript
-            : str
-    })
+
     return {
         exportStringIndex,
         startScriptStringIndex,
         endScriptStringIndex,
         scriptContent,
         vueScriptContent,
-        vueOptions,
     }
+}
+export function getNodeByKind(
+    node: ts.Node,
+    kind: ts.SyntaxKind
+): ts.Node | undefined {
+    const find = (node: ts.Node): ts.Node | undefined => {
+        return ts.forEachChild(node, (child) => {
+            if (child.kind === kind) {
+                return child
+            }
+            return find(child)
+        })
+    }
+    return find(node)
+}
+export function getNodeByName(
+    node: ts.Node,
+    name: string,
+    maxDepth?: number
+): ts.Node | undefined {
+    let depth = 0
+    if (maxDepth === undefined) maxDepth = Number.MAX_SAFE_INTEGER
+    const find = (node: ts.Node): ts.Node | undefined => {
+        return ts.forEachChild(node, (child: any) => {
+            depth++
+            if (child?.name?.escapedText === name) {
+                return child
+            }
+            return depth < maxDepth ? find(child) : undefined
+        })
+    }
+    return find(node)
+}
+export function getTypeFromNode(
+    node: ts.Node & { type: ts.TypeNode },
+    typeChecker: ts.TypeChecker
+): string {
+    const type = typeChecker.getTypeFromTypeNode(node.type) as ts.Type & {
+        intrinsicName: string
+    }
+    return (type?.aliasSymbol?.escapedName ?? type?.intrinsicName) as string
 }

@@ -15,7 +15,13 @@ export default Vue.extend({
     components: {
         HelloWorld,
     },
-    data: () => ({ a: 1212 as number }),
+    data: () => ({
+        a: '1gfh2dsa12' as string,
+        b: { a: 2 as number },
+        c: 1 as number,
+        d: { a: 'dsadsa' } as CustomType,
+        SOME_CONST,
+    }),
     created() {
         this.a = 123
     },
